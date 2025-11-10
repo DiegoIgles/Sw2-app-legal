@@ -96,6 +96,11 @@ export default function MisDocumentosScreen() {
     router.push("/subir-pdf");
   };
 
+  // 👉 FAB: navegar a Plazos
+  const handleGoPlazos = () => {
+    router.push("/plazos"); // pantalla con selector de expedientes
+  };
+
   // 👉 FAB: navegar a Mis Notas
   const handleGoNotas = () => {
     router.push("/mis-notas");
@@ -181,6 +186,16 @@ export default function MisDocumentosScreen() {
           />
         )}
 
+        {/* 🔵 Botón flotante redondo: ir a Plazos (arriba) */}
+        <TouchableOpacity
+          onPress={handleGoPlazos}
+          style={[styles.fab, styles.fabPlazos]}
+          accessibilityRole="button"
+          accessibilityLabel="Ir a plazos"
+        >
+          <Text style={styles.fabIcon}>⏳</Text>
+        </TouchableOpacity>
+
         {/* 🔵 Botón flotante redondo: ir a Mis Notas */}
         <TouchableOpacity
           onPress={handleGoNotas}
@@ -259,17 +274,18 @@ const styles = StyleSheet.create({
   },
   retryText: { color: "#111827", fontWeight: "600" },
 
-  // 🔵 FAB (botón flotante)
+  // 🔵 FAB (botones flotantes)
   fab: {
     position: "absolute",
     right: 20,
-    bottom: 24,
+    bottom: 24,                // FAB de Mis Notas
     width: 56,
     height: 56,
     borderRadius: 28,
     backgroundColor: "#111827",
     alignItems: "center",
     justifyContent: "center",
+    zIndex: 20,
 
     // Sombra iOS
     shadowColor: "#000",
@@ -279,6 +295,10 @@ const styles = StyleSheet.create({
 
     // Elevación Android
     elevation: 6,
+  },
+  // Coloca el FAB de Plazos por encima (un poco más arriba)
+  fabPlazos: {
+    bottom: 92, // 24 (margen) + 56 (alto FAB) + 12 (gap) = 92
   },
   fabIcon: {
     fontSize: 22,
