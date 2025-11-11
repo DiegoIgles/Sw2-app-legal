@@ -7,6 +7,7 @@ import {
   FlatList,
   Linking,
   Platform,
+  Pressable,
   RefreshControl,
   StyleSheet,
   Text,
@@ -41,6 +42,11 @@ export default function MisDocumentosScreen() {
   const [error, setError] = useState<string | null>(null);
   const [docs, setDocs] = useState<Documento[]>([]);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
+
+  // Speed Dial
+  const [fabOpen, setFabOpen] = useState(false);
+  const toggleFab = () => setFabOpen((v) => !v);
+  const closeFab = () => setFabOpen(false);
 
   const load = async () => {
     try {
@@ -93,17 +99,25 @@ export default function MisDocumentosScreen() {
 
   // 👉 Navegar a la vista de subida de PDF
   const handleGoUpload = () => {
+    closeFab();
     router.push("/subir-pdf");
   };
 
-  // 👉 FAB: navegar a Plazos
+  // 👉 Acciones del Speed Dial
   const handleGoPlazos = () => {
-    router.push("/plazos"); // pantalla con selector de expedientes
+    closeFab();
+    router.push("/plazos");
   };
 
-  // 👉 FAB: navegar a Mis Notas
   const handleGoNotas = () => {
+    closeFab();
     router.push("/mis-notas");
+  };
+
+  const handleGoIA = () => {
+    closeFab();
+    // Ajusta a la ruta real de tu asistente IA
+    router.push("/resumenes-ia");
   };
 
   const renderItem = ({ item }: { item: Documento }) => {
@@ -134,6 +148,13 @@ export default function MisDocumentosScreen() {
       </View>
     );
   };
+
+  // Constantes de layout para el Speed Dial
+  const GAP = 12;
+  const SIZE_MAIN = 56;
+  const BASE_BOTTOM = 24;
+  const actionBottom = (index: number) =>
+    BASE_BOTTOM + (SIZE_MAIN + GAP) * (index + 1);
 
   return (
     <View style={styles.screen}>
@@ -186,24 +207,51 @@ export default function MisDocumentosScreen() {
           />
         )}
 
-        {/* 🔵 Botón flotante redondo: ir a Plazos (arriba) */}
-        <TouchableOpacity
-          onPress={handleGoPlazos}
-          style={[styles.fab, styles.fabPlazos]}
-          accessibilityRole="button"
-          accessibilityLabel="Ir a plazos"
-        >
-          <Text style={styles.fabIcon}>⏳</Text>
-        </TouchableOpacity>
+        {/* Backdrop para cerrar el speed dial */}
+        {fabOpen && <Pressable style={styles.backdrop} onPress={closeFab} />}
 
-        {/* 🔵 Botón flotante redondo: ir a Mis Notas */}
+        {/* Acciones del Speed Dial (se muestran cuando está abierto) */}
+        {fabOpen && (
+          <>
+            <TouchableOpacity
+              onPress={handleGoIA}
+              style={[styles.miniFab, { bottom: actionBottom(2) }]}
+              accessibilityRole="button"
+              accessibilityLabel="Ir a IA"
+            >
+              <Text style={styles.fabIcon}>🤖</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={handleGoPlazos}
+              style={[styles.miniFab, { bottom: actionBottom(1) }]}
+              accessibilityRole="button"
+              accessibilityLabel="Ir a plazos"
+            >
+              <Text style={styles.fabIcon}>⏳</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={handleGoNotas}
+              style={[styles.miniFab, { bottom: actionBottom(0) }]}
+              accessibilityRole="button"
+              accessibilityLabel="Ir a mis notas"
+            >
+              <Text style={styles.fabIcon}>📝</Text>
+            </TouchableOpacity>
+          </>
+        )}
+
+        {/* FAB principal (＋) */}
         <TouchableOpacity
-          onPress={handleGoNotas}
-          style={styles.fab}
+          onPress={toggleFab}
+          style={styles.fabMain}
           accessibilityRole="button"
-          accessibilityLabel="Ir a mis notas"
+          accessibilityLabel={fabOpen ? "Cerrar menú de acciones" : "Abrir menú de acciones"}
         >
-          <Text style={styles.fabIcon}>📝</Text>
+          <Text style={[styles.fabMainIcon, fabOpen && styles.fabMainIconOpen]}>
+            ＋
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -274,11 +322,19 @@ const styles = StyleSheet.create({
   },
   retryText: { color: "#111827", fontWeight: "600" },
 
-  // 🔵 FAB (botones flotantes)
-  fab: {
+  // Backdrop para cerrar el speed dial
+  backdrop: {
+    position: "absolute",
+    left: 0, right: 0, top: 0, bottom: 0,
+    backgroundColor: "rgba(0,0,0,0.12)",
+    zIndex: 15,
+  },
+
+  // FAB principal
+  fabMain: {
     position: "absolute",
     right: 20,
-    bottom: 24,                // FAB de Mis Notas
+    bottom: 24,
     width: 56,
     height: 56,
     borderRadius: 28,
@@ -296,12 +352,36 @@ const styles = StyleSheet.create({
     // Elevación Android
     elevation: 6,
   },
-  // Coloca el FAB de Plazos por encima (un poco más arriba)
-  fabPlazos: {
-    bottom: 92, // 24 (margen) + 56 (alto FAB) + 12 (gap) = 92
+  fabMainIcon: {
+    fontSize: 28,
+    color: "#fff",
+  },
+  fabMainIconOpen: {
+    transform: [{ rotate: "45deg" }], // Se ve como "×"
+  },
+
+  // Mini FABs (acciones del Speed Dial)
+  miniFab: {
+    position: "absolute",
+    right: 24,
+    // bottom dinámico desde el render
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: "#111827",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 20,
+
+    // Sombras
+    shadowColor: "#000",
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 6,
   },
   fabIcon: {
-    fontSize: 22,
+    fontSize: 20,
     color: "#fff",
   },
 });
