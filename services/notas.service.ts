@@ -1,7 +1,6 @@
 // services/notas.service.ts
 import { getToken } from "./auth.service";
-
-const API_BASE = "http://192.168.100.252:3000"; // usa la IP de tu backend
+import { API_BASE } from "./env";
 
 export interface ClienteMini {
   id_cliente: number;

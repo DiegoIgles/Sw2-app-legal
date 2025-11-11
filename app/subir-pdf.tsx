@@ -17,6 +17,7 @@ import {
 import * as DocumentPicker from "expo-document-picker";
 import { Navbar } from "../components/layouts/Navbar";
 import { DOCS_BASE_URL } from "../services/documento.service";
+import { API_BASE } from "../services/env";
 import { getToken } from "../services/auth.service";
 
 type EstadoExp = "ABIERTO" | "EN_PROCESO" | "CERRADO";
@@ -31,7 +32,7 @@ type Expediente = {
 
 const EXPEDIENTES_BASE = Platform.select({
   web: "http://localhost:3000",
-  default: "http://192.168.100.252:3000", // 👈 cambia a la IP de tu PC si pruebas en dispositivo
+  default: API_BASE,
 });
 
 export default function SubirPdfScreen() {

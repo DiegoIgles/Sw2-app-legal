@@ -5,8 +5,10 @@ import { getToken } from "./auth.service";
 const DOCS_DEBUG = true;           // pon en false para silenciar logs
 const REQ_TIMEOUT_MS = 15000;
 
-/** ========= BASE y ENDPOINTS (IP fija) ========= */
-export const DOCS_BASE_URL = "http://192.168.100.252:8081";
+/** ========= BASE y ENDPOINTS (centralizados) ========= */
+import { DOCS_BASE } from "./env";
+
+export const DOCS_BASE_URL = DOCS_BASE;
 
 export const DOCS_ENDPOINTS = {
   misDocumentos: `${DOCS_BASE_URL}/mis-documentos`,

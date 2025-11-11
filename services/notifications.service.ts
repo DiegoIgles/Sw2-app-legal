@@ -1,6 +1,5 @@
 import { getToken } from "./auth.service";
-
-const API_BASE = "http://192.168.100.252:3000"; // ⚠️ usa la IP de tu PC en móvil
+import { API_BASE } from "./env";
 
 export async function registerDeviceOnBackend(expoPushToken: string, platform: "android"|"ios") {
   const jwt = await getToken();

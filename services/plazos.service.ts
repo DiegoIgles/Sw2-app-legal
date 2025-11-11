@@ -1,7 +1,6 @@
 // services/plazos.service.ts
 import { getToken } from "./auth.service";
-
-const API_BASE = "http://192.168.100.252:3000"; // ← tu backend NestJS
+import { API_BASE } from "./env"; // centralizado
 
 // ---------- Tipos ----------
 export type EstadoExp = "ABIERTO" | "EN_PROCESO" | "CERRADO";

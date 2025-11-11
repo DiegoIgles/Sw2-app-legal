@@ -18,10 +18,11 @@ import { login } from "../services/auth.service";
 // 👇 nuevos imports
 import { registerDeviceOnBackend } from "../services/notifications.service";
 import { initRealtime } from "../services/realtime";
+import { WS_BASE } from "../services/env";
 import { registerForPushNotificationsAsync } from "../utils/notifications";
 
-// ⚠️ Usa la IP de tu backend (no localhost en dispositivo físico)
-const RT_BASE = "http://192.168.100.252:3000";
+// La base de realtime se obtiene desde services/env (usa ws:// en dev)
+
 
 export default function LoginScreen() {
   const { width } = useWindowDimensions();
@@ -64,7 +65,7 @@ export default function LoginScreen() {
 
       // 3) Conectar socket para escuchar 'nota:creada' y disparar notificación local
       if (idCliente) {
-        initRealtime({ baseUrl: RT_BASE, id_cliente: idCliente });
+        initRealtime({ baseUrl: WS_BASE, id_cliente: idCliente });
       }
 
       // 4) Navegación como ya lo tenías
