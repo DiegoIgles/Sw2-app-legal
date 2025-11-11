@@ -1,17 +1,17 @@
 import { router } from "expo-router";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    Alert,
-    FlatList,
-    Linking,
-    Platform,
-    RefreshControl,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Linking,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from "react-native";
+import { IA_BASE } from "../services/env";
 
 type Summary = {
   id: string;
@@ -24,11 +24,9 @@ type Summary = {
   image_url?: string | null;
 };
 
-const API_BASE = Platform.select({
-  android: "http://192.168.100.252:3003",
-  default: "http://192.168.100.252:3003",
-})!;
+type IAPlatform = string;
 
+const API_BASE: IAPlatform = IA_BASE;
 const ENDPOINT = `${API_BASE}/legal/summaries/all?sign_urls=true&url_ttl=900`;
 
 export default function ResumenesIAScreen() {

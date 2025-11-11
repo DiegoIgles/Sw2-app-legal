@@ -86,15 +86,17 @@ export async function fetchMisDocumentos(): Promise<Documento[]> {
     throw new Error("No hay token. Inicia sesión nuevamente.");
   }
 
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
   time("[FETCH] mis-documentos");
   let res: Response;
   try {
     res = await fetchWithTimeout(url, {
       method: "GET",
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+      headers,
     });
     timeEnd("[FETCH] mis-documentos");
   } catch (err: any) {

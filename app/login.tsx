@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
@@ -14,14 +14,10 @@ import {
 } from "react-native";
 import { Navbar } from "../components/layouts/Navbar";
 import { login } from "../services/auth.service";
-
-// 👇 nuevos imports
+import { WS_BASE } from "../services/env";
 import { registerDeviceOnBackend } from "../services/notifications.service";
 import { initRealtime } from "../services/realtime";
-import { WS_BASE } from "../services/env";
 import { registerForPushNotificationsAsync } from "../utils/notifications";
-
-// La base de realtime se obtiene desde services/env (usa ws:// en dev)
 
 
 export default function LoginScreen() {

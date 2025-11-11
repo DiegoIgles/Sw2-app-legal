@@ -1,16 +1,16 @@
 import * as ImagePicker from "expo-image-picker";
-import React, { useCallback, useState } from "react";
 import { router } from "expo-router";
+import { useCallback, useState } from "react";
 import {
-    ActivityIndicator,
-    Alert,
-    Image,
-    Linking,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Alert,
+  Image,
+  Linking,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { Navbar } from "../components/layouts/Navbar";
 
@@ -26,7 +26,9 @@ type SummaryOut = {
 };
 
 // Usa tu endpoint con save=true
-const IA_ENDPOINT = "http://192.168.100.252:3003/legal/summarize?save=true";
+import { IA_BASE } from "../services/env";
+
+const IA_ENDPOINT = `${IA_BASE}/legal/summarize?save=true`;
 
 function isSupportedImage(mime?: string) {
   return mime?.startsWith("image/");

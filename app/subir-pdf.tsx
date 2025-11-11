@@ -1,24 +1,24 @@
 // app/subir-pdf.tsx
-import { router } from "expo-router";
-import React, { useCallback, useEffect, useState } from "react";
-import {
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  ActivityIndicator,
-  Modal,
-  FlatList,
-} from "react-native";
 import * as DocumentPicker from "expo-document-picker";
+import { router } from "expo-router";
+import { useCallback, useEffect, useState } from "react";
+import {
+    ActivityIndicator,
+    Alert,
+    FlatList,
+    KeyboardAvoidingView,
+    Modal,
+    Platform,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import { Navbar } from "../components/layouts/Navbar";
+import { getToken } from "../services/auth.service";
 import { DOCS_BASE_URL } from "../services/documento.service";
 import { API_BASE } from "../services/env";
-import { getToken } from "../services/auth.service";
 
 type EstadoExp = "ABIERTO" | "EN_PROCESO" | "CERRADO";
 type Expediente = {
